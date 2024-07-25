@@ -1,0 +1,54 @@
+import random
+
+class GuessNumberGame:
+    def __init__(self):
+        self.number_to_guess = random.randint(1, 100)
+        self.attempts = 0
+        self.max_attempts = 10
+        self.has_won = False
+
+    def make_guess(self, guess):
+        self.attempts += 1
+        if guess < self.number_to_guess:
+            return "Слишком низко!"
+        elif guess > self.number_to_guess:
+            return "Слишком высоко!"
+        else:
+            self.has_won = True
+            return "Поздравляем! Вы угадали число!"
+
+    def is_game_over(self):
+        return self.attempts >= self.max_attempts or self.has_won
+
+    def get_remaining_attempts(self):
+        return self.max_attempts - self.attempts
+
+def play_game():
+    game = GuessNumberGame()
+    print("Добро пожаловать в игру 'Угадай число'!")
+    print("Я загадал число от 1 до 100.")
+    print(f"У вас есть {game.max_attempts} попыток, чтобы его угадать.")
+
+    while not game.is_game_over():
+        guess = input("Введите ваше предположение: ")
+        try:
+            guess = int(guess)
+            if guess < 1 or guess > 100:
+                print("Пожалуйста, введите число от 1 до 100.")
+                continue
+        except ValueError:
+            print("Это не число. Пожалуйста, попробуйте снова.")
+            continue
+
+        result = game.make_guess(guess)
+        print(result)
+
+        if not game.has_won:
+            remaining = game.get_remaining_attempts()
+            if remaining > 0:
+                print(f"Осталось попыток: {remaining}")
+            else:
+                print(f"Игра окончена! Я загадал число: {game.number_to_guess}")
+
+if __name__ == "__main__":
+    play_game()
